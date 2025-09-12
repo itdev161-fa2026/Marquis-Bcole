@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router } from 'express';
 import connectDatabase from "./config/db.js";
 
 
@@ -7,10 +7,24 @@ const app = express();
 
 connectDatabase();
 
+app.use(express.json({extended: false}));
+
 //api endpoints
+/**
+ * @route
+ * @desc
+ */
 app.get ('/', (req, res)=>
     res.send("http get request sent to  root api endpoint")
 );
+/**
+ * @route
+ * @desc
+ */
+app.post("/api/users", (req, res) =>{
+    console.log(req.body);
+    res.send(req.body);
+});
 
 
 // connection listener
