@@ -1,18 +1,18 @@
-import mongoose from "mongoose";
-import config from "config";
+import mongoose from 'mongoose';
+import config from 'config';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
-const db = config.get("mongoURI");
+const db = process.env.MONGO_URI || config.get('mongoURI');
 
-//connect to MangoDB
 const connectDatabase = async () => {
     try {
         await mongoose.connect(db);
-        console.log("connected to mongoDB");
-    } catch (error){
+        console.log('Connected to MongoDB');
+    } catch (error) {
         console.error(error.message);
 
-        //exit with failure code
         process.exit(1);
     }
 };
