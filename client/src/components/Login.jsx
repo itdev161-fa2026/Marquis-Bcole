@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
+import toast from 'react-hot-toast';
 
 const Login = ({ onLogin, error: authError }) => {
   const [formData, setFormData] = useState({
@@ -21,17 +22,23 @@ const Login = ({ onLogin, error: authError }) => {
 
   const validateForm = () => {
     const newErrors = {};
+///
 
     if (!email.trim()) {
       newErrors.email = 'Email is required';
+      toast.error('Email is required');
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Email is invalid';
+      toast.error('Email is invalid');
     }
-
+///
     if (!password) {
       newErrors.password = 'Password is required';
+      toast.error('Password is required');
+      
     }
 
+///
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -44,8 +51,14 @@ const Login = ({ onLogin, error: authError }) => {
     }
 
     setLoading(true);
-    await onLogin(email, password);
+    const result = await onLogin(email, password);
     setLoading(false);
+    
+    if (result?.success) {
+      toast.success('Login successful!');
+    } else {
+      toast.error('Invalid email or password');
+    }
   };
 
   return (

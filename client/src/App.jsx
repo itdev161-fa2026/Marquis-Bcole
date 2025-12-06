@@ -9,6 +9,7 @@
   import CreatePost from './pages/CreatePost';
   import EditPost from './pages/EditPost';
   import './App.css';
+  import { Toaster } from 'react-hot-toast';
 
   function App() {
     return (
@@ -40,6 +41,7 @@
             </Routes>
           </div>
         </Router>
+        <Toaster />
       </AuthProvider>
     );
   }

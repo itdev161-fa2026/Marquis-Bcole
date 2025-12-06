@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import './PostCard.css';
+import { formatDistanceToNow, format } from 'date-fns';
 
 const PostCard = ({ post }) => {
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
 
   return (
     <div className="post-card">
@@ -13,7 +10,12 @@ const PostCard = ({ post }) => {
         <h2>{post.title}</h2>
         <div className="post-meta">
           <span className="post-author">By {post.user?.name || 'Unknown'}</span>
-          <span className="post-date">{formatDate(post.createDate)}</span>
+          <span 
+            className="post-date" 
+            title={format(new Date(post.createDate), "PPPP 'at' p")}
+          >
+            {formatDistanceToNow(new Date(post.createDate), { addSuffix: true })}
+          </span>
         </div>
         <p className="post-preview">
           {post.body.substring(0, 150)}

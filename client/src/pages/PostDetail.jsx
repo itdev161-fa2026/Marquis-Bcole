@@ -3,6 +3,7 @@
   import { getPostById, deletePost } from '../services/api';
   import { AuthContext } from '../context/authContext';
   import './PostDetail.css';
+  import toast from 'react-hot-toast';
 
 const PostDetail = () => {
   const { id } = useParams();
@@ -38,21 +39,35 @@ const PostDetail = () => {
   const handleEdit = () => {
       navigate(`/posts/${id}/edit`);
     };
- 
-    const handleDelete = async () => {
-      if (window.confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
-        try {
-          await deletePost(id);
-          navigate('/');
-        } catch (err) {
-          const errorMsg =
-            err.response?.data?.msg ||
-            'Failed to delete post. Please try again.';
-          alert(errorMsg);
-        }
+  ///
+  const handleDelete = () => {
+    const CDelete = async (t) => {
+      toast.dismiss(t.id);
+      try {
+        await deletePost(id);
+        toast.success('Post deleted successfully');
+        navigate('/');
+      } catch (err) {
+        toast.error('Failed to delete post.');
+        console.error('failed to delete post', err);
       }
     };
- 
+
+    toast((t) => (
+      <div className="c-toast-content">
+        <p>Are you sure you want to delete this post?</p>
+        <div className="button-group">
+          <button onClick={() => CDelete(t)}>Confirm</button>
+          <button onClick={() => toast.dismiss(t.id)}>Cancel</button>
+        </div>
+      </div>
+    ), {
+      duration: 10000,
+      position: 'top-center',
+      id: 'delete-confirm',
+    });
+  };
+///
     const canModify = user && post && user.id === post.user._id;
 
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Register.css";
+import toast from "react-hot-toast";
 
 const Register = ({ onRegister, error: authError }) => {
   const [formData, setFormData] = useState({
@@ -25,18 +26,23 @@ const Register = ({ onRegister, error: authError }) => {
 
     if (!name.trim()) {
       newErrors.name = "Name is required";
+      toast.error("Name is required");
     }
 
     if (!email.trim()) {
       newErrors.email = "Email is required";
+      toast.error("Email is required");
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
+      toast.error("Email is invalid");
     }
 
     if (!password) {
       newErrors.password = "Password is required";
+      toast.error("Password is required");
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
+      toast.error("Password must be at least 6 characters");
     }
 
     setErrors(newErrors);
@@ -51,8 +57,14 @@ const Register = ({ onRegister, error: authError }) => {
     }
 
     setLoading(true);
-    await onRegister(name, email, password);
+    const result = await onRegister(name, email, password);
     setLoading(false);
+    
+    if (result?.success) {
+      toast.success("Registration successful!");
+    } else {
+      toast.error(result?.error || "Registration failed");
+    }
   };
 
   return (
