@@ -5,6 +5,7 @@
   import { AuthContext } from '../context/authContext';
   import './Home.css';
 
+
   const Home = () => {
     const navigate = useNavigate();
     const [posts, setPosts] = useState([]);
@@ -31,7 +32,7 @@
     }, []);
 
     if (loading) {
-      return <div className="container loading">Loading posts...</div>;
+    return <div className="container loading">Loading post...</div>;
     }
 
     if (error) {

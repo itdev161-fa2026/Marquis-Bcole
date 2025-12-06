@@ -4,6 +4,7 @@ import { AuthContext } from '../context/authContext';
 import { createPost } from '../services/api';
 import PostForm from '../components/PostForm';
 import './CreatePost.css';
+import toast from 'react-hot-toast';
 
 const CreatePost = () => {
     const {user} = useContext(AuthContext);
@@ -15,14 +16,14 @@ const CreatePost = () => {
         try{
             setError(null);
             setLoading(true);
-
+          ///
             const newPost = await createPost(title, body);
-
+            toast.success('Post created successfully');
             navigate(`/posts/${newPost._id}`);
         } catch (err) {
             const errorMsg =
             err.response?.data?.errors?.[0]?.msg ||
-            err.response?.data?.msg ||"Failed to create post. Please try again."
+            toast.error('Failed to create post. Please try again.');
             setError(errorMsg);
             setLoading(false);
         }

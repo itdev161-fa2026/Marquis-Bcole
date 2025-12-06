@@ -19,6 +19,7 @@ const RegisterPage = () => {
         if (result.success) {
             navigate("/");
         }
+        return result;
     };
 
     return (

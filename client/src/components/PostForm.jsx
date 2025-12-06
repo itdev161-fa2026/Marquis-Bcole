@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import './PostForm.css';
+import toast from 'react-hot-toast';
 
 const PostForm = ({mode, initialData, onSubmit, onCancel, loading}) => {
     const [formData, setFormData] = useState({
@@ -28,19 +29,19 @@ const PostForm = ({mode, initialData, onSubmit, onCancel, loading}) => {
 
     const validateForm = () => {
         const newErrors = {};
-
+        ///
         if (!title.trim()) {
-            newErrors.title = "Title is required";
+          toast.error("Title is required");
         } else if (title.trim().length < 3) {
-            newErrors.title = "Title must be at least 3 characters";
+          toast.error("Title must be at least 3 characters");
         }
 
         if(!body.trim()) {
-            newErrors.body = "body is required";
+            toast.error("Body is required");
         } else if (body.trim().length < 10){
-            newErrors.body = "Body must be at least 10 characters"
+            toast.error("Body must be at least 10 characters");
         }
-
+        ///
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
